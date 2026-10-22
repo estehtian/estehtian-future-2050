@@ -1,0 +1,800 @@
+
+Gunakan GitHub Pages untuk preview desain dan pengembangan.
+Baik. Kita tetapkan GitHub Pages sebagai tempat preview desain dan pengembangan Esteh Tian Future 2050, dengan biaya hosting preview Rp0 selama menggunakan fitur gratis GitHub Pages.
+
+Kita akan memisahkan preview desain dari website bisnis utama agar pengembangan lebih aman.
+
+Rencana pengembangan Esteh Tian Future 2050
+Zoi Ice Tea - Awwwards Nominee
+Tahap 1 — Preview desain
+
+Gunakan GitHub Pages untuk menguji tampilan futuristik 2050, warna, tipografi, animasi, dan tampilan ponsel.
+
+Fokus sekarang
+Medium
+Tahap 2 — Katalog produk
+
+Tambahkan foto minuman, nama varian, harga yang sebenarnya, paket hemat, dan informasi produk.
+
+Tea web ui by Pixel Nest on Dribbble
+Tahap 3 — Simulasi pemesanan
+
+Uji tombol pesan, navigasi, dan formulir contoh tanpa memproses pembayaran sungguhan.
+
+Tama Tea Can Design & Tea Branding — Creature Theory
+Tahap 4 — Persiapan website bisnis
+
+Setelah desain disetujui, tentukan platform untuk situs bisnis dan pemesanan. GitHub Pages tetap digunakan sebagai preview; jangan menganggapnya sebagai hosting transaksi bisnis.
+
+Langkah yang kita lakukan sekarang
+Buka repositori Anda di GitHub, lalu periksa file index.html dan pengaturan Settings → Pages.
+
+Alamat preview yang sebelumnya Anda berikan adalah:
+
+https://estehtian.github.io/estehtian-future-2050/
+
+Saya belum memverifikasi status deployment saat ini. Karena itu, kita perlu memastikan halaman tersebut tampil sebelum melanjutkan pengembangan.
+
+1. Kondisi preview sekarang
+
+
+Halaman sudah tampil
+
+Masih muncul error 404
+
+Belum memeriksa atau belum mengaktifkan Pages
+2. Desain yang ingin dikembangkan
+
+
+Website futuristik lengkap dengan katalog dan simulasi pemesanan
+
+Fokus pada desain premium, animasi, dan tampilan 2050
+
+Fokus pada katalog produk dan jalur penjualan
+Kita akan mengembangkan desain berdasarkan kondisi repositori yang sebenarnya, sehingga perubahan berikutnya dapat diuji melalui preview sebelum diterapkan ke website bisnis.
+
+Halaman sudah tampil, Website futuristik lengkap dengan katalog dan simulasi pemesanan dan desain premium, animasi, dan tampilan 2050
+
+from pathlib import Path
+import zipfile, textwrap
+
+out_dir = Path("/mnt/data/estehtian_future_2050")
+out_dir.mkdir(parents=True, exist_ok=True)
+
+html = r'''<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07120f">
+  <meta name="description" content="Esteh Tian Future 2050 — pengalaman teh premium dengan sentuhan masa depan.">
+  <title>Esteh Tian — Future 2050</title>
+  <style>
+    :root{
+      --bg:#06100e;--panel:#0c1c18;--panel2:#10251f;--mint:#a8ffd6;--mint2:#50e7a4;
+      --text:#f2fff8;--muted:#a3bdb2;--line:rgba(168,255,214,.17);--gold:#e8d5a0;
+      --shadow:0 24px 80px rgba(0,0,0,.35)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{margin:0;background:
+      radial-gradient(ellipse at 78% 5%,rgba(37,119,83,.22),transparent 34%),
+      radial-gradient(ellipse at 0% 48%,rgba(29,91,74,.18),transparent 35%),var(--bg);
+      color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit;text-decoration:none} button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .wrap{width:min(1160px,90%);margin:auto}
+    .nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(6,16,14,.82);border-bottom:1px solid var(--line)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.12em;font-size:13px}
+    .brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--mint),#2b9970);color:#06100e;font-size:19px;box-shadow:0 0 25px #50e7a433}
+    .nav-links{display:flex;align-items:center;gap:25px;color:#c2d8ce;font-size:13px}
+    .nav-links a:hover{color:var(--mint)}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:9px 13px;color:var(--mint);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+    .btn{border:0;border-radius:12px;padding:13px 18px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:transform .2s,box-shadow .2s,background .2s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:var(--mint);color:#07130f;box-shadow:0 10px 28px #50e7a421}
+    .btn-primary:hover{background:#c5ffe4;box-shadow:0 14px 36px #50e7a43b}
+    .btn-ghost{border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--text)}
+    .cart-count{display:inline-grid;place-items:center;min-width:21px;height:21px;border-radius:99px;background:var(--mint);color:#07130f;font-size:11px;padding:0 5px}
+    .hero{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:45px;align-items:center;padding:78px 0 86px;min-height:600px}
+    .hero:after{content:"";position:absolute;z-index:-1;width:420px;height:420px;right:6%;top:12%;border-radius:50%;background:#45df9b0a;filter:blur(30px)}
+    .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--mint);font-weight:800}
+    h1{font-size:clamp(48px,7.2vw,88px);line-height:.96;letter-spacing:-.065em;margin:22px 0 24px;max-width:680px}
+    h1 span{color:var(--mint);text-shadow:0 0 40px #50e7a426}
+    .hero-copy{max-width:510px;color:var(--muted);font-size:16px;line-height:1.8}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .hero-meta{display:flex;gap:28px;margin-top:38px;padding-top:24px;border-top:1px solid var(--line);max-width:490px}
+    .meta strong{display:block;font-size:21px}.meta span{font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .visual{position:relative;min-height:450px;display:grid;place-items:center}
+    .orbit{position:absolute;width:min(420px,100%);aspect-ratio:1;border:1px solid #a8ffd624;border-radius:50%;animation:spin 28s linear infinite}
+    .orbit:before,.orbit:after{content:"";position:absolute;border:1px solid #a8ffd619;border-radius:50%}
+    .orbit:before{inset:28px}.orbit:after{inset:65px;border-style:dashed}
+    .orbit-dot{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--mint);box-shadow:0 0 20px var(--mint);top:16%;left:20%}
+    .product-stage{position:relative;width:min(300px,78%);height:370px;border:1px solid #c4ffe044;border-radius:44% 44% 28px 28px;background:linear-gradient(150deg,#b6ffdc1d,#ffffff03 55%,#50e7a411);box-shadow:inset 0 0 45px #50e7a40a,0 35px 80px #0008;display:flex;align-items:center;justify-content:center;overflow:hidden;transform:rotate(2deg);animation:float 5s ease-in-out infinite}
+    .product-stage:before{content:"";position:absolute;inset:12px;border:1px solid #b7ffdb18;border-radius:inherit}
+    .cup{position:relative;width:150px;height:235px;border-radius:22px 22px 42px 42px;clip-path:polygon(4% 0,96% 0,85% 100%,15% 100%);background:linear-gradient(90deg,#4b2619,#b87843 25%,#e2b77d 48%,#874d2d 80%,#321a13);box-shadow:inset 0 0 22px #fff4;display:flex;align-items:center;justify-content:center}
+    .cup:before{content:"";position:absolute;top:12px;width:100%;height:16px;background:#c5ffe5aa;border:2px solid #d5ffed;border-radius:50%}
+    .cup:after{content:"ESTEH TIAN";position:absolute;top:90px;left:0;right:0;text-align:center;font-size:12px;letter-spacing:.12em;font-weight:900;color:#fff8}
+    .leaf{position:absolute;font-size:76px;filter:drop-shadow(0 8px 22px #50e7a455);transform:rotate(-20deg);top:66px;right:40px}
+    .float-tag{position:absolute;border:1px solid var(--line);background:#0a1a15d9;backdrop-filter:blur(12px);padding:13px 15px;border-radius:14px;box-shadow:var(--shadow)}
+    .float-tag small{display:block;color:var(--muted);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+    .float-tag strong{display:block;margin-top:5px;font-size:14px}
+    .tag-one{left:0;bottom:75px}.tag-two{right:-3px;top:65px}
+    .section{padding:78px 0}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:30px}
+    .section-head h2{font-size:clamp(30px,4vw,46px);letter-spacing:-.045em;margin:10px 0 0}
+    .section-head p{max-width:420px;color:var(--muted);line-height:1.7;margin:0}
+    .products{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .product-card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:linear-gradient(150deg,#11251e,#091510 78%);transition:transform .25s,border-color .25s}
+    .product-card:hover{transform:translateY(-6px);border-color:#a8ffd65e}
+    .product-art{height:220px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 65%,#50e7a41c,transparent 55%)}
+    .product-art:before{content:"";position:absolute;width:180px;height:180px;border:1px solid #a8ffd61e;border-radius:50%}
+    .drink{position:relative;width:86px;height:135px;border-radius:14px 14px 26px 26px;clip-path:polygon(4% 0,96% 0,86% 100%,14% 100%);box-shadow:inset 10px 0 18px #fff2,0 18px 30px #0008}
+    .drink:before{content:"";position:absolute;top:4px;left:0;right:0;height:12px;background:#d9ffecaa;border-radius:50%;border:1px solid #fff9}
+    .drink:after{content:"T";position:absolute;left:0;right:0;top:54px;text-align:center;font-weight:900;font-size:26px;color:#ffffffbd}
+    .tea{background:linear-gradient(90deg,#60351e,#d09a53 45%,#8b4c25)}
+    .matcha{background:linear-gradient(90deg,#244a2b,#8abf68 48%,#315a35)}
+    .lychee{background:linear-gradient(90deg,#8c443d,#f0b2a4 48%,#a04b48)}
+    .badge{position:absolute;left:16px;top:16px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:7px 9px;border-radius:999px;background:#a8ffd6;color:#06100e;font-weight:900}
+    .product-info{padding:20px}
+    .product-info h3{margin:0 0 7px;font-size:19px}
+    .product-info p{color:var(--muted);font-size:13px;line-height:1.65;min-height:42px;margin:0 0 18px}
+    .product-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .price{font-weight:900;font-size:20px;color:var(--mint)}
+    .price small{font-size:11px;color:var(--muted);font-weight:500}
+    .add-btn{width:42px;height:42px;border:1px solid var(--line);border-radius:13px;background:#a8ffd610;color:var(--mint);font-size:22px}
+    .add-btn:hover{background:var(--mint);color:#06100e}
+    .bundle{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:35px;border:1px solid #a8ffd62b;border-radius:26px;background:linear-gradient(115deg,#11271e,#0a1712 70%);overflow:hidden}
+    .bundle h2{font-size:clamp(28px,4vw,42px);letter-spacing:-.04em;margin:12px 0}
+    .bundle p{color:var(--muted);line-height:1.8;max-width:480px}
+    .bundle-price{display:flex;align-items:baseline;gap:12px;margin:18px 0}.bundle-price strong{font-size:32px;color:var(--mint)}.bundle-price del{color:#789087}
+    .bundle-art{display:flex;align-items:center;justify-content:center;gap:12px;min-height:230px;position:relative}
+    .bundle-art:before{content:"";position:absolute;width:260px;height:260px;border:1px solid #a8ffd61d;border-radius:50%;box-shadow:0 0 70px #50e7a40a}
+    .mini-cup{position:relative;width:70px;height:120px;border-radius:12px 12px 23px 23px;clip-path:polygon(4% 0,96% 0,86% 100%,14% 100%);background:linear-gradient(90deg,#56301c,#d4a062,#74401f);box-shadow:0 18px 24px #0007}
+    .mini-cup:nth-child(2){transform:translateY(-20px);background:linear-gradient(90deg,#2b4d2b,#95c86b,#345c35)}
+    .mini-cup:nth-child(3){background:linear-gradient(90deg,#88453f,#f0b3a4,#984943)}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .step{padding:24px;border:1px solid var(--line);border-radius:18px;background:#ffffff04}
+    .step-num{color:var(--mint);font-size:12px;letter-spacing:.15em}
+    .step h3{margin:14px 0 8px}.step p{color:var(--muted);line-height:1.7;font-size:13px;margin:0}
+    .cta-band{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:32px;border-radius:24px;background:linear-gradient(110deg,#b0ffda,#68dca8);color:#07130f}
+    .cta-band h2{font-size:clamp(24px,3.5vw,38px);letter-spacing:-.04em;margin:0 0 8px}.cta-band p{color:#234e3b;margin:0}
+    .cta-band .btn{background:#07130f;color:var(--mint);white-space:nowrap}
+    footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:12px}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px}
+    .demo-note{font-size:11px;color:#b8c9c1;border:1px dashed #a8ffd64a;border-radius:12px;padding:12px 14px;line-height:1.6;margin-top:18px}
+    .modal-backdrop{position:fixed;inset:0;background:#000a;backdrop-filter:blur(7px);z-index:50;display:none;align-items:center;justify-content:center;padding:18px}
+    .modal-backdrop.open{display:flex}
+    .modal{width:min(560px,100%);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:22px;background:#0a1913;box-shadow:var(--shadow);padding:24px}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .modal h2{margin:0;font-size:25px}.close{border:1px solid var(--line);background:transparent;color:var(--text);width:38px;height:38px;border-radius:11px;font-size:20px}
+    .cart-list{display:grid;gap:10px;margin:20px 0}
+    .cart-row{display:flex;justify-content:space-between;gap:12px;padding:12px;border-radius:12px;background:#ffffff06;border:1px solid #ffffff0d}
+    .cart-row small{display:block;color:var(--muted);margin-top:4px}
+    .cart-controls{display:flex;align-items:center;gap:8px}
+    .cart-controls button{width:28px;height:28px;border:1px solid var(--line);border-radius:8px;background:#ffffff08;color:var(--mint)}
+    .total{display:flex;justify-content:space-between;padding:16px 0;border-top:1px solid var(--line);font-weight:900}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+    .field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted)}
+    .field input,.field textarea,.field select{width:100%;background:#07120e;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;outline:none}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--mint)}
+    .empty{text-align:center;color:var(--muted);padding:28px 10px}
+    .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--mint);color:#07130f;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:800;z-index:80;transition:.25s;box-shadow:var(--shadow)}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @keyframes float{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-12px) rotate(-1deg)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}.reveal{opacity:1;transform:none}}
+    @media(max-width:820px){.nav-links{display:none}.hero{grid-template-columns:1fr;padding:60px 0 45px;gap:20px}.hero-copy{max-width:650px}.visual{min-height:390px}.products{grid-template-columns:repeat(2,1fr)}.bundle{grid-template-columns:1fr}.bundle-art{grid-row:1;min-height:190px}.steps{grid-template-columns:1fr}.section{padding:58px 0}.section-head{align-items:start;flex-direction:column}}
+    @media(max-width:540px){.wrap{width:91%}.nav-inner{min-height:66px}.brand{font-size:11px}.nav-actions .btn{padding:10px 11px;font-size:12px}.hero{padding-top:48px}.hero-meta{gap:18px}.meta strong{font-size:18px}.visual{min-height:340px}.orbit{width:320px}.product-stage{height:300px;width:235px}.cup{transform:scale(.85)}.tag-one{left:-3px;bottom:35px}.tag-two{right:-2px;top:35px}.float-tag{padding:10px 11px}.products{grid-template-columns:1fr}.product-art{height:205px}.bundle{padding:24px}.cta-band{align-items:flex-start;flex-direction:column}.footer-inner{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#home"><span class="brand-mark">✦</span><span>ESTEH TIAN <span style="color:var(--mint);font-weight:500">/ 2050</span></span></a>
+      <nav class="nav-links" aria-label="Navigasi utama">
+        <a href="#produk">Menu</a><a href="#paket">Paket hemat</a><a href="#pengalaman">Pengalaman</a><a href="#tentang">Tentang kami</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-ghost" id="openCart" aria-label="Buka keranjang">Keranjang <span class="cart-count" id="cartCount">0</span></button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section class="wrap hero" id="home">
+      <div class="reveal visible">
+        <div class="pill"><span>✦</span> THE FUTURE IS FRESH</div>
+        <h1>Segarkan hari.<br>Rasakan <span>masa depan.</span></h1>
+        <p class="hero-copy">Pengalaman menikmati teh dengan karakter modern, rasa yang menyegarkan, dan identitas yang berani. Selamat datang di dunia Esteh Tian 2050.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#produk">Jelajahi menu <span>↗</span></a>
+          <a class="btn btn-ghost" href="#tentang">Kenali Esteh Tian</a>
+        </div>
+        <div class="hero-meta">
+          <div class="meta"><strong>Fresh</strong><span>RASA MENYEGARKAN</span></div>
+          <div class="meta"><strong>Future</strong><span>IDENTITAS MODERN</span></div>
+          <div class="meta"><strong>Tian</strong><span>DIBUAT DENGAN CERITA</span></div>
+        </div>
+      </div>
+      <div class="visual reveal visible" aria-label="Ilustrasi minuman Esteh Tian">
+        <div class="orbit"><span class="orbit-dot"></span></div>
+        <div class="product-stage"><div class="cup"></div><div class="leaf">✦</div></div>
+        <div class="float-tag tag-one"><small>Signature collection</small><strong>Tea, reimagined.</strong></div>
+        <div class="float-tag tag-two"><small>Future mood</small><strong>Fresh energy ◉</strong></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="produk">
+      <div class="section-head reveal">
+        <div><div class="eyebrow">01 / THE MENU</div><h2>Temukan favoritmu.</h2></div>
+        <p>Kenali koleksi rasa Esteh Tian. Harga di bawah adalah contoh untuk preview dan bisa Anda ubah sesuai harga jual sebenarnya.</p>
+      </div>
+      <div class="products">
+        <article class="product-card reveal">
+          <div class="product-art"><span class="badge">Signature</span><div class="drink tea"></div></div>
+          <div class="product-info"><h3>Classic Tian Tea</h3><p>Teh klasik dengan karakter bold dan sentuhan manis yang seimbang.</p><div class="product-bottom"><div class="price">Rp 8.000 <small>/ cup</small></div><button class="add-btn" data-add="classic" aria-label="Tambah Classic Tian Tea">+</button></div></div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-art"><span class="badge">Green choice</span><div class="drink matcha"></div></div>
+          <div class="product-info"><h3>Emerald Green Tea</h3><p>Nuansa teh hijau yang ringan, segar, dan cocok menemani aktivitas.</p><div class="product-bottom"><div class="price">Rp 10.000 <small>/ cup</small></div><button class="add-btn" data-add="green" aria-label="Tambah Emerald Green Tea">+</button></div></div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-art"><span class="badge">Fan favorite</span><div class="drink lychee"></div></div>
+          <div class="product-info"><h3>Lychee Glow Tea</h3><p>Perpaduan teh dan nuansa leci yang fruity untuk mood lebih cerah.</p><div class="product-bottom"><div class="price">Rp 12.000 <small>/ cup</small></div><button class="add-btn" data-add="lychee" aria-label="Tambah Lychee Glow Tea">+</button></div></div>
+        </article>
+      </div>
+      <p class="demo-note">Catatan preview: nama menu, deskripsi, dan harga di atas hanya contoh konsep. Sesuaikan dengan produk, ukuran, biaya, dan harga jual Esteh Tian yang sebenarnya sebelum dipublikasikan untuk pelanggan.</p>
+    </section>
+
+    <section class="section wrap" id="paket">
+      <div class="bundle reveal">
+        <div>
+          <div class="eyebrow">02 / THE VALUE SET</div>
+          <h2>Lebih banyak kesegaran.<br>Lebih hemat bersama.</h2>
+          <p>Kenalkan paket mix tiga rasa untuk teman kerja, keluarga, atau waktu santai. Paket ini adalah contoh promosi yang dapat disesuaikan setelah biaya dan margin dihitung.</p>
+          <div class="bundle-price"><strong>Rp 27.000</strong><del>Rp 30.000</del></div>
+          <button class="btn btn-primary" data-add="bundle">Tambah paket ke keranjang ↗</button>
+        </div>
+        <div class="bundle-art" aria-hidden="true"><div class="mini-cup"></div><div class="mini-cup"></div><div class="mini-cup"></div></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="pengalaman">
+      <div class="section-head reveal">
+        <div><div class="eyebrow">03 / THE EXPERIENCE</div><h2>Dirancang untuk terasa mudah.</h2></div>
+        <p>Alur sederhana untuk membantu pengunjung mengenali menu, menyusun pesanan, dan melihat ringkasan sebelum melanjutkan.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><div class="step-num">STEP 01 / EXPLORE</div><h3>Pilih rasa favorit</h3><p>Jelajahi koleksi minuman dan paket yang sesuai dengan selera Anda.</p></div>
+        <div class="step reveal"><div class="step-num">STEP 02 / CUSTOMIZE</div><h3>Susun pesanan</h3><p>Tambahkan produk ke keranjang dan atur jumlahnya sebelum meninjau ringkasan.</p></div>
+        <div class="step reveal"><div class="step-num">STEP 03 / REVIEW</div><h3>Periksa detail</h3><p>Isi data contoh dan tinjau pesanan demo. Tidak ada pembayaran atau pengiriman pesanan nyata.</p></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="tentang">
+      <div class="cta-band reveal">
+        <div><h2>Tradisi teh. Energi masa depan.</h2><p>Esteh Tian — rasa yang akrab, pengalaman yang terus berkembang.</p></div>
+        <button class="btn" id="ctaOrder">Coba simulasi pesanan ↗</button>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><div class="brand"><span class="brand-mark">✦</span><span>ESTEH TIAN / 2050</span></div><div>© 2026 Esteh Tian. Preview desain & pengembangan.</div><div>Crafted for a fresher future.</div></div></footer>
+
+  <div class="modal-backdrop" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="cartTitle">Keranjang simulasi</h2><button class="close" id="closeCart" aria-label="Tutup">×</button></div>
+      <p style="color:var(--muted);font-size:13px;line-height:1.7">Periksa pilihan Anda. Ini hanya demo; pesanan tidak dikirim ke toko.</p>
+      <div class="cart-list" id="cartList"></div>
+      <div class="total"><span>Total simulasi</span><span id="cartTotal">Rp 0</span></div>
+      <form id="demoForm">
+        <div class="form-grid">
+          <div class="field"><label for="customerName">Nama (contoh)</label><input id="customerName" name="customerName" placeholder="Nama Anda" required></div>
+          <div class="field"><label for="customerPhone">Nomor kontak (opsional)</label><input id="customerPhone" name="customerPhone" placeholder="Tidak wajib"></div>
+          <div class="field full"><label for="orderNote">Catatan pesanan (opsional)</label><textarea id="orderNote" name="orderNote" rows="2" placeholder="Contoh: tanpa es"></textarea></div>
+        </div>
+        <div class="demo-note">DEMO SAJA — data formulir tidak dikirim atau disimpan ke server. Jangan masukkan data sensitif.</div>
+        <button class="btn btn-primary" style="width:100%;margin-top:16px" type="submit">Tampilkan ringkasan demo ↗</button>
+      </form>
+      <div id="orderResult" class="demo-note" hidden></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const catalog = {
+      classic:{name:"Classic Tian Tea",price:8000},
+      green:{name:"Emerald Green Tea",price:10000},
+      lychee:{name:"Lychee Glow Tea",price:12000},
+      bundle:{name:"Paket Mix 3 Cup",price:27000}
+    };
+    const cart = {};
+    const money = n => new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n);
+    const modal = document.getElementById("cartModal");
+    const toast = document.getElementById("toast");
+    function showToast(message){
+      toast.textContent=message;toast.classList.add("show");
+      window.setTimeout(()=>toast.classList.remove("show"),2200);
+    }
+    function addItem(id){
+      if(!catalog[id]) return;
+      cart[id]=(cart[id]||0)+1;
+      updateCart();showToast(catalog[id].name+" ditambahkan");
+    }
+    function updateCart(){
+      const entries=Object.entries(cart).filter(([,qty])=>qty>0);
+      document.getElementById("cartCount").textContent=entries.reduce((sum,[,qty])=>sum+qty,0);
+      const list=document.getElementById("cartList");
+      if(!entries.length){list.innerHTML='<div class="empty">Keranjang masih kosong.<br>Tambahkan menu untuk mencoba simulasi.</div>';}
+      else{
+        list.innerHTML=entries.map(([id,qty])=>`<div class="cart-row"><div><strong>${catalog[id].name}</strong><small>${money(catalog[id].price)} / item</small></div><div class="cart-controls"><button type="button" data-change="${id}" data-delta="-1" aria-label="Kurangi ${catalog[id].name}">−</button><strong>${qty}</strong><button type="button" data-change="${id}" data-delta="1" aria-label="Tambah ${catalog[id].name}">+</button></div></div>`).join("");
+      }
+      const total=entries.reduce((sum,[id,qty])=>sum+catalog[id].price*qty,0);
+      document.getElementById("cartTotal").textContent=money(total);
+      document.getElementById("orderResult").hidden=true;
+    }
+    function openCart(){updateCart();modal.classList.add("open");document.body.style.overflow="hidden";}
+    function closeCart(){modal.classList.remove("open");document.body.style.overflow="";}
+    document.querySelectorAll("[data-add]").forEach(button=>button.addEventListener("click",()=>addItem(button.dataset.add)));
+    document.getElementById("openCart").addEventListener("click",openCart);
+    document.getElementById("ctaOrder").addEventListener("click",openCart);
+    document.getElementById("closeCart").addEventListener("click",closeCart);
+    modal.addEventListener("click",e=>{if(e.target===modal)closeCart();});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart();});
+    document.getElementById("cartList").addEventListener("click",e=>{
+      const button=e.target.closest("[data-change]");if(!button)return;
+      const id=button.dataset.change;cart[id]=(cart[id]||0)+Number(button.dataset.delta);
+      if(cart[id]<=0)delete cart[id];updateCart();
+    });
+    document.getElementById("demoForm").addEventListener("submit",e=>{
+      e.preventDefault();
+      const entries=Object.entries(cart).filter(([,qty])=>qty>0);
+      if(!entries.length){showToast("Tambahkan minimal satu produk dahulu");return;}
+      const name=document.getElementById("customerName").value.trim();
+      const total=entries.reduce((sum,[id,qty])=>sum+catalog[id].price*qty,0);
+      const lines=entries.map(([id,qty])=>`${catalog[id].name} × ${qty}`).join(" • ");
+      const result=document.getElementById("orderResult");
+      result.hidden=false;
+      result.textContent=`SIMULASI BERHASIL — Nama: ${name}. Pesanan: ${lines}. Total contoh: ${money(total)}. Tidak ada pesanan yang dikirim dan tidak ada data yang disimpan.`;
+      result.scrollIntoView({behavior:"smooth",block:"nearest"});
+    });
+    // Reveal animation, with reduced-motion preference respected in CSS.
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target);}});
+    },{threshold:.12});
+    document.querySelectorAll(".reveal:not(.visible)").forEach(el=>observer.observe(el));
+    updateCart();
+  </script>
+</body>
+</html>
+'''
+
+html_path = out_dir / "index.html"
+html_path.write_text(html, encoding="utf-8")
+
+readme = """# Esteh Tian Future 2050 — Preview
+
+Static responsive website preview built with HTML, CSS, and JavaScript.
+
+## Publish to GitHub Pages
+1. Open the repository `estehtian-future-2050`.
+2. Replace the existing root `index.html` with this file.
+3. Commit the changes to the `main` branch.
+4. Open Settings → Pages and ensure `main` / `/(root)` is selected.
+5. Wait for the deployment to complete.
+
+## Notes
+- Product names, descriptions, and prices are sample content. Edit them before presenting them as real offers.
+- Cart and order form are a local simulation only. They do not send orders, collect payments, or save form data.
+- This preview uses no external libraries or remote assets.
+"""
+(out_dir / "README.md").write_text(readme, encoding="utf-8")
+
+zip_path = Path("/mnt/data/estehtian_future_2050_preview.zip")
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    z.write(html_path, "index.html")
+    z.write(out_dir / "README.md", "README.md")
+
+print("Berhasil membuat paket preview:")
+print(f"HTML: {html_path} ({html_path.stat().st_size:,} bytes)")
+print(f"ZIP:  {zip_path} ({zip_path.stat().st_size:,} bytes)")
+Berhasil membuat paket preview:
+HTML: /mnt/data/estehtian_future_2050/index.html (26,482 bytes)
+ZIP:  /mnt/data/estehtian_future_2050_preview.zip (8,638 bytes)
+Kita lanjutkan ke versi yang lebih lengkap: Esteh Tian Future 2050 — Premium Digital Tea Experience.
+
+Karena halaman GitHub Pages Anda sudah tampil, kita bisa langsung mengembangkan desain tanpa mengubah DNS atau pengaturan domain. Saya akan menyusun versi preview dengan dua fokus sekaligus:
+
+Visual premium 2050: latar gelap, aksen hijau neon, efek kaca, animasi halus, dan tampilan responsif untuk ponsel.
+
+Fitur bisnis: katalog minuman, kartu harga, paket hemat, keranjang simulasi, dan formulir pemesanan demo.
+
+Pemesanan pada versi preview ini hanya simulasi. Belum ada pembayaran, stok nyata, atau pesanan yang otomatis dikirim ke penjual.
+
+File preview siap dipasang
+Saya sudah menyiapkan file website versi pengembangan. Anda dapat mengunduhnya dan memasangnya ke repositori GitHub yang sudah ada.
+
+Esteh Tian Future 2050 — Preview
+
+HTML, CSS, JavaScript · Responsif · Tanpa pustaka eksternal
+
+Unduh paket website ZIP
+
+Unduh file index.html saja
+
+Cara memasang ke GitHub
+Unduh file ZIP di atas, lalu ekstrak di komputer Anda.
+Buka repositori Anda: estehtian-future-2050.
+
+Buka file index.html yang sudah ada. Pilih ikon pensil Edit this file.
+
+Ganti seluruh isi file lama dengan isi index.html baru. Alternatifnya, gunakan Add file → Upload files untuk mengunggah file HTML yang sudah diekstrak, lalu pastikan file tersebut menggantikan file lama di lokasi root.
+
+Isi pesan commit, misalnya Upgrade Esteh Tian Future 2050 preview, kemudian simpan perubahan ke branch main.
+
+Buka tab Actions dan tunggu proses deployment selesai. Setelah itu, buka kembali preview website Anda.
+
+Yang sudah tersedia di versi ini:
+
+Desain premium bernuansa hijau neon dan hitam futuristik.
+
+Animasi, efek orbit, dan tata letak responsif.
+
+Katalog tiga contoh minuman dan satu paket hemat.
+
+Keranjang dengan tombol tambah/kurangi serta kalkulasi total.
+
+Formulir simulasi pesanan tanpa pembayaran atau pengiriman data ke server.
+
+Harga produk masih berupa contoh. Ubah sesuai harga jual dan biaya operasional Anda sebelum ditampilkan sebagai penawaran nyata.
+
+Langkah berikutnya: setelah file dipasang, buka preview dan beri tahu saya apakah tampilannya sudah sesuai. Kita dapat melanjutkan dengan foto produk asli, logo Esteh Tian, harga sebenarnya, dan tombol WhatsApp untuk pemesanan nyata di platform yang sesuai.
+
+
+index.html
+HTML
+Untuk simulasi pemesanan dan checkout, ada opsi plugin hosted payment WooCommerce.
+
+
+
+Ads do not influence the answers you get from ChatGPT. Your chats stay private. 
+Learn about ads and personalization
+tampilannya belum futuristic dan modern
+
+
+from pathlib import Path
+import zipfile
+
+base = Path("/mnt/data/estehtian_future_2050_v2")
+base.mkdir(exist_ok=True)
+html = r'''<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#03110f">
+<title>ESTEH TIAN — Future 2050</title>
+<style>
+:root{--bg:#020c0b;--panel:#061a17;--panel2:#09251f;--mint:#57ffd0;--mint2:#00dba2;--cyan:#72f5ff;--white:#edfff9;--muted:#a5c2ba;--line:#1c5b4c;--gold:#e9c77e}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:82px}body{margin:0;color:var(--white);font-family:Inter,Arial,sans-serif;background:radial-gradient(ellipse at 75% 0%,#0b51433d,transparent 34%),radial-gradient(ellipse at 0% 55%,#0c3c3330,transparent 32%),var(--bg);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.15;background-image:linear-gradient(#59ffd00a 1px,transparent 1px),linear-gradient(90deg,#59ffd00a 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+a{color:inherit;text-decoration:none}button,input,textarea{font:inherit}button{cursor:pointer}.shell{width:min(1240px,92%);margin:auto}
+header{position:sticky;top:0;z-index:30;background:#03110fe8;backdrop-filter:blur(20px);border-bottom:1px solid #48ffd025}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.14em;font-size:13px}.logo-mark{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--mint);border-radius:13px;color:var(--mint);font-size:22px;box-shadow:0 0 25px #57ffd02b,inset 0 0 15px #57ffd014}.logo small{display:block;font-size:8px;letter-spacing:.45em;color:var(--mint);margin-top:4px}.navlinks{display:flex;gap:28px;color:#c1d9d1;font-size:12px}.navlinks a:hover{color:var(--mint)}.navright{display:flex;gap:10px;align-items:center}
+.btn{border:1px solid transparent;border-radius:999px;padding:12px 18px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:12px;font-weight:800;transition:.25s}.btn:hover{transform:translateY(-2px);filter:brightness(1.1)}.primary{color:#00130e;background:linear-gradient(110deg,#65ffd4,#18dba6);box-shadow:0 0 24px #2affbd25}.outline{border-color:#45e9c280;color:var(--mint);background:#00d9a508}.cartbtn{border:1px solid #286e5a;background:#071b17;color:var(--white);border-radius:99px;padding:10px 13px;font-size:12px}.count{display:inline-grid;place-items:center;min-width:20px;height:20px;background:var(--mint);color:#00130e;border-radius:99px;font-weight:900;margin-left:5px}
+.hero{min-height:505px;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:22px;padding:40px 0 45px;position:relative}.hero-copy{position:relative;z-index:2}.micro{font-size:10px;font-weight:900;letter-spacing:.3em;color:var(--mint);text-transform:uppercase}.micro:before{content:"";display:inline-block;width:24px;height:1px;background:var(--mint);vertical-align:middle;margin-right:10px}h1{font-size:clamp(46px,6vw,78px);letter-spacing:-.065em;line-height:.96;margin:20px 0}.gradient{background:linear-gradient(100deg,#f1fff9 10%,#7dffcf 55%,#32caff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{font-size:14px;line-height:1.85;color:var(--muted);max-width:450px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.proof{display:flex;gap:20px;margin-top:32px;padding-top:20px;border-top:1px solid #3affc022}.proof div{font-size:10px;color:#bdd6ce;line-height:1.6}.proof b{display:block;color:var(--mint);font-size:12px}
+.hero-art{height:440px;position:relative;display:grid;place-items:center;isolation:isolate}.portal{position:absolute;width:min(440px,95%);aspect-ratio:1;border-radius:50%;border:1px solid #65ffe044;box-shadow:0 0 0 18px #1bffd008,0 0 0 54px #1bffd005,0 0 70px #1bffd018;transform:rotate(-14deg)}.portal:before{content:"";position:absolute;inset:22px;border-radius:50%;border:1px dashed #75ffdf42;animation:spin 35s linear infinite}.portal:after{content:"";position:absolute;inset:65px;border-radius:50%;border:1px solid #6fffe22a}.ring{position:absolute;width:400px;height:100px;border:2px solid #5fffd0;border-radius:50%;transform:rotate(-15deg);box-shadow:0 0 18px #4cffd0, inset 0 0 15px #4cffd044;z-index:4}.cup-wrap{position:relative;z-index:3;transform:rotate(4deg);animation:float 5s ease-in-out infinite;filter:drop-shadow(0 28px 35px #0009)}.cup{width:178px;height:270px;position:relative;border-radius:20px 20px 38px 38px;clip-path:polygon(3% 0,97% 0,84% 100%,16% 100%);background:linear-gradient(90deg,#6b3517,#cf7a2d 17%,#f5bc64 35%,#9a4b1e 65%,#3e1c12);box-shadow:inset 13px 0 18px #fff4,inset -15px 0 25px #12070099}.cup:before{content:"";position:absolute;top:1px;left:0;right:0;height:24px;border-radius:50%;background:linear-gradient(90deg,#5f321b,#ffdb91,#75401d);border:2px solid #d7ffef}.cup:after{content:"ESTEH TIAN";position:absolute;left:0;right:0;top:112px;text-align:center;color:#fff;font-size:13px;font-weight:900;letter-spacing:.12em;text-shadow:0 2px 5px #311}.cup-label{position:absolute;top:137px;left:0;right:0;text-align:center;font-size:7px;letter-spacing:.4em;color:#fff}.ice{position:absolute;z-index:2;top:20px;left:24px;width:31px;height:28px;border:1px solid #fff9;background:#d7fff955;border-radius:8px;transform:rotate(17deg);box-shadow:0 0 10px #fff6}.ice.i2{left:79px;top:13px;transform:rotate(-13deg)}.ice.i3{left:120px;top:25px;transform:rotate(22deg)}.lime{position:absolute;z-index:5;width:82px;height:82px;border-radius:50%;border:8px solid #baff5b;background:repeating-conic-gradient(#e7ff9a 0 12deg,#75d54a 12deg 22deg);box-shadow:0 0 25px #a5ff5d55;right:calc(50% - 145px);top:72px}.lime:after{content:"";position:absolute;inset:12px;border:2px solid #eaffae;border-radius:50%}.leaf{position:absolute;z-index:5;width:78px;height:35px;background:linear-gradient(130deg,#b9ff81,#14a95b);border-radius:100% 0 100% 0;box-shadow:0 0 25px #36ff9b55;transform:rotate(-28deg);left:calc(50% + 38px);top:40px}.leaf:after{content:"";position:absolute;width:60px;height:1px;background:#e2ffb4;left:8px;top:18px;transform:rotate(-10deg)}.platform{position:absolute;z-index:2;width:330px;height:60px;bottom:35px;border-radius:50%;border:2px solid #58ffcf;background:linear-gradient(180deg,#0b3b30,#04110f);box-shadow:0 0 30px #29ffc66b,inset 0 0 20px #5fffd044}.platform:before{content:"";position:absolute;inset:8px;border-radius:50%;border:1px solid #9affdf88}.float-card{position:absolute;z-index:6;border:1px solid #4bba9a66;background:#061813df;backdrop-filter:blur(14px);padding:12px 15px;border-radius:13px;box-shadow:0 14px 35px #0006;font-size:11px}.float-card small{display:block;color:var(--muted);font-size:8px;letter-spacing:.18em;margin-bottom:6px}.float-card b{color:var(--mint)}.fc1{left:0;bottom:78px}.fc2{right:0;top:55px}.scan{position:absolute;width:90%;height:1px;background:linear-gradient(90deg,transparent,#57ffd0,transparent);box-shadow:0 0 12px #57ffd0;top:45%;z-index:6;opacity:.65}
+.section{padding:56px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:24px}.section-head h2{font-size:clamp(28px,3.7vw,42px);letter-spacing:-.05em;margin:9px 0 0}.section-head p{max-width:420px;color:var(--muted);font-size:12px;line-height:1.7;margin:0}.catalog-layout{display:grid;grid-template-columns:1fr 285px;gap:22px;align-items:start}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.filter{border:1px solid #215849;background:#071713;color:#aac8bd;border-radius:99px;padding:8px 13px;font-size:10px}.filter.active,.filter:hover{background:var(--mint);color:#03130e;border-color:var(--mint)}.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.product{border:1px solid #1a5949;border-radius:18px;background:linear-gradient(145deg,#0b211b,#04110f);overflow:hidden;transition:.25s;position:relative}.product:hover{transform:translateY(-4px);border-color:#56ffd080;box-shadow:0 15px 35px #0004}.product-visual{height:160px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 80%,#18d99c23,transparent 65%),linear-gradient(135deg,#0b2820,#03100e)}.product-visual:before{content:"";position:absolute;width:135px;height:135px;border:1px solid #50ffd022;border-radius:50%;box-shadow:0 0 0 18px #50ffd006,0 0 0 38px #50ffd004}.drink{position:relative;width:67px;height:106px;z-index:1;border-radius:10px 10px 21px 21px;clip-path:polygon(4% 0,96% 0,85% 100%,15% 100%);box-shadow:inset 8px 0 12px #fff3;filter:drop-shadow(0 12px 10px #0009)}.drink:before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:#e7fff5bd;border-radius:50%;border:1px solid #fff}.drink:after{content:"T";position:absolute;top:42px;left:0;right:0;text-align:center;font-size:18px;font-weight:900;color:#fff}.original{background:linear-gradient(90deg,#6b3217,#e2a34d 43%,#8b411c)}.lemon{background:linear-gradient(90deg,#8b641a,#f7e177 44%,#a6b536)}.milk{background:linear-gradient(90deg,#704a35,#e9d1ac 43%,#a77b58)}.lychee{background:linear-gradient(90deg,#7c3349,#f2a6bc 43%,#b64b6d)}.product-chip{position:absolute;left:12px;top:12px;z-index:3;border:1px solid #64fddc55;color:var(--mint);background:#04140fd9;border-radius:99px;padding:6px 8px;font-size:8px;text-transform:uppercase;letter-spacing:.12em}.product-body{padding:14px}.product-body h3{margin:0 0 6px;font-size:14px}.product-body p{margin:0;min-height:34px;font-size:10px;line-height:1.6;color:var(--muted)}.product-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:13px}.price{font-size:15px;font-weight:900;color:var(--mint)}.price small{font-size:9px;color:var(--muted);font-weight:500}.add{width:34px;height:34px;border-radius:10px;border:1px solid #4cf5c277;color:var(--mint);background:#4cf5c20c;font-size:19px}.add:hover{background:var(--mint);color:#03130e}
+.cart-panel{border:1px solid #218568;border-radius:20px;background:linear-gradient(145deg,#09231c,#03110f);padding:17px;position:sticky;top:90px;box-shadow:0 0 32px #00e7a50a}.cart-title{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #1d5b4a;font-weight:800;font-size:14px}.cart-title span{color:var(--mint)}.cart-items{display:grid;gap:9px;padding:13px 0}.cart-empty{text-align:center;color:#89a99d;font-size:11px;line-height:1.7;padding:16px 5px}.cart-row{display:grid;grid-template-columns:1fr auto;gap:8px;padding-bottom:10px;border-bottom:1px solid #174638}.cart-row strong{font-size:11px}.cart-row small{display:block;color:var(--muted);font-size:9px;margin-top:4px}.qty{display:flex;align-items:center;gap:6px}.qty button{width:23px;height:23px;border:1px solid #2a735c;border-radius:7px;color:var(--mint);background:#061610}.qty b{font-size:10px}.sumline{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin:9px 0}.sumline.total{border-top:1px solid #1d5b4a;padding-top:13px;color:var(--mint);font-size:14px;font-weight:900}.full{width:100%;margin-top:8px}.hint{font-size:9px;color:#88a99c;line-height:1.6;margin:12px 0 0}
+.bundle{display:grid;grid-template-columns:1fr .8fr;gap:20px;align-items:center;position:relative;overflow:hidden;border:1px solid #1e6652;border-radius:22px;background:linear-gradient(110deg,#0c2a21,#04110f 75%);padding:27px}.bundle h2{font-size:clamp(25px,3vw,37px);line-height:1.05;letter-spacing:-.05em;margin:12px 0}.bundle p{color:var(--muted);font-size:12px;line-height:1.8;max-width:480px}.bundle-price{display:flex;gap:12px;align-items:baseline;margin:16px 0}.bundle-price b{font-size:24px;color:var(--mint)}.bundle-price del{color:#719086;font-size:11px}.bundle-cups{display:flex;justify-content:center;align-items:end;gap:12px;min-height:170px;position:relative}.bundle-cups:before{content:"";position:absolute;width:220px;height:220px;border:1px solid #46ffcb33;border-radius:50%;box-shadow:0 0 45px #0fffb51a}.bundle-cups .drink{width:62px;height:105px}.bundle-cups .drink:nth-child(2){height:132px}.save{position:absolute;right:20px;top:20px;background:var(--mint);color:#03130e;padding:7px 10px;border-radius:99px;font-size:9px;font-weight:900}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.step{border:1px solid #1b5648;border-radius:16px;background:#071713;padding:20px}.stepnum{color:var(--mint);font-size:10px;letter-spacing:.2em}.step h3{font-size:14px;margin:12px 0 7px}.step p{font-size:11px;line-height:1.7;color:var(--muted);margin:0}
+.cta-band{padding:27px;border:1px solid #4bffd455;border-radius:19px;background:radial-gradient(ellipse at 90% 0%,#39f5ba1d,transparent 55%),#071b16;display:flex;justify-content:space-between;align-items:center;gap:20px}.cta-band h2{margin:0 0 8px;font-size:clamp(22px,3vw,34px);letter-spacing:-.04em}.cta-band p{margin:0;color:var(--muted);font-size:12px}
+footer{margin-top:35px;border-top:1px solid #1c5949;padding:23px 0;color:#8eaaa0;font-size:10px}.foot{display:flex;justify-content:space-between;align-items:center;gap:15px}.demo{font-size:10px;line-height:1.6;color:#b6d1c7;border:1px dashed #3a9077;border-radius:10px;padding:10px 12px;margin-top:13px}
+.backdrop{display:none;position:fixed;inset:0;z-index:60;background:#000b;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:18px}.backdrop.open{display:flex}.modal{width:min(520px,100%);max-height:90vh;overflow:auto;background:#061812;border:1px solid #2d8a6d;border-radius:20px;padding:22px;box-shadow:0 20px 90px #000}.modalhead{display:flex;justify-content:space-between;align-items:center}.modal h2{margin:0;font-size:23px}.close{background:transparent;color:var(--white);border:1px solid #2c705a;border-radius:9px;width:34px;height:34px}.field{display:grid;gap:6px;margin-top:13px}.field label{font-size:10px;color:var(--muted)}.field input,.field textarea{background:#03100c;border:1px solid #225b49;border-radius:9px;padding:11px;color:white;width:100%}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;z-index:90;pointer-events:none;background:var(--mint);color:#03130e;padding:12px 17px;border-radius:99px;font-size:11px;font-weight:900;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}.reveal.on{opacity:1;transform:none}@keyframes float{0%,100%{transform:translateY(0) rotate(4deg)}50%{transform:translateY(-12px) rotate(1deg)}}@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+@media(max-width:900px){.navlinks{gap:14px}.hero{grid-template-columns:1fr 1fr}.catalog-layout{grid-template-columns:1fr}.cart-panel{position:relative;top:auto;order:-1}.cart-items{grid-template-columns:repeat(2,1fr)}.hero-art{height:380px}.portal{width:340px}.ring{width:330px}.cup{transform:scale(.88)}}
+@media(max-width:650px){.shell{width:92%}.nav{height:64px}.navlinks{display:none}.logo{font-size:11px}.navright .outline{display:none}.hero{grid-template-columns:1fr;padding-top:40px}.hero-art{height:350px;grid-row:1}.hero-copy{grid-row:2}.portal{width:310px}.ring{width:290px}.cup{transform:scale(.8)}.lime{right:calc(50% - 125px);top:53px;transform:scale(.8)}.leaf{top:34px}.platform{width:260px;bottom:25px}.fc1{left:0;bottom:40px}.fc2{right:0;top:25px}.proof{gap:12px}.proof div{font-size:9px}.section{padding:42px 0}.section-head{display:block}.section-head p{margin-top:12px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.product-visual{height:128px}.product-body{padding:11px}.product-body h3{font-size:12px}.product-body p{font-size:9px;min-height:45px}.price{font-size:12px}.product-bottom{gap:4px}.add{width:30px;height:30px}.bundle{grid-template-columns:1fr;padding:20px}.bundle-cups{grid-row:1;min-height:140px}.steps{grid-template-columns:1fr}.cta-band{align-items:flex-start;flex-direction:column}.foot{align-items:flex-start;flex-direction:column}.cart-items{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="shell nav">
+<a class="logo" href="#home"><span class="logo-mark">◈</span><span>ESTEH TIAN<small>F U T U R E&nbsp; 2 0 5 0</small></span></a>
+<nav class="navlinks"><a href="#home">Beranda</a><a href="#produk">Produk</a><a href="#paket">Paket</a><a href="#tentang">Tentang</a></nav>
+<div class="navright"><button class="cartbtn" id="jumpCart">♧ Keranjang <span class="count" id="count">0</span></button><a class="btn outline" href="#pesan">Pesan ↗</a></div>
+</div></header>
+<main>
+<section class="shell hero" id="home">
+<div class="hero-copy reveal on"><div class="micro">Premium tea experience</div><h1>Esteh Tian<br><span class="gradient">Future 2050</span></h1><p>Perpaduan teh pilihan, kesegaran alami, dan sentuhan teknologi masa depan untuk pengalaman minum yang lebih dari sekadar haus.</p><div class="actions"><a class="btn primary" href="#produk">＋ Lihat produk</a><a class="btn outline" href="#pesan">◉ Pesan sekarang</a></div><div class="proof"><div><b>✧ Bahan pilihan</b>Berkualitas</div><div><b>◎ Rasa segar</b>Alami</div><div><b>⌬ Inovasi</b>Rasa masa depan</div></div></div>
+<div class="hero-art reveal on"><div class="portal"></div><div class="scan"></div><div class="ring"></div><div class="cup-wrap"><div class="cup"></div><div class="cup-label">FUTURE 2050</div><span class="ice"></span><span class="ice i2"></span><span class="ice i3"></span></div><div class="lime"></div><div class="leaf"></div><div class="platform"></div><div class="float-card fc1"><small>Signature collection</small><b>Tea, reimagined.</b></div><div class="float-card fc2"><small>Freshness protocol</small><b>● ONLINE / FRESH</b></div></div>
+</section>
+<section class="shell section" id="produk"><div class="section-head reveal"><div><div class="micro">01 / Katalog produk</div><h2>Varian favorit.</h2></div><p>Setiap tegukan membawa kesegaran dan kebahagiaan. Harga di bawah adalah contoh untuk preview.</p></div>
+<div class="catalog-layout"><div><div class="filters"><button class="filter active" data-filter="all">Semua</button><button class="filter" data-filter="tea">Tea original</button><button class="filter" data-filter="fruit">Fruit tea</button><button class="filter" data-filter="premium">Premium</button></div>
+<div class="products">
+<article class="product reveal" data-kind="tea"><div class="product-visual"><span class="product-chip">Signature</span><div class="drink original"></div></div><div class="product-body"><h3>Esteh Original</h3><p>Teh pilihan dengan rasa autentik yang khas.</p><div class="product-bottom"><div class="price">Rp 8.000 <small>/ cup</small></div><button class="add" data-add="original">+</button></div></div></article>
+<article class="product reveal" data-kind="fruit"><div class="product-visual"><span class="product-chip">Fresh pick</span><div class="drink lemon"></div></div><div class="product-body"><h3>Esteh Lemon</h3><p>Perpaduan teh dan lemon yang menyegarkan.</p><div class="product-bottom"><div class="price">Rp 10.000 <small>/ cup</small></div><button class="add" data-add="lemon">+</button></div></div></article>
+<article class="product reveal" data-kind="premium"><div class="product-visual"><span class="product-chip">Creamy</span><div class="drink milk"></div></div><div class="product-body"><h3>Esteh Milk Tea</h3><p>Rasa teh premium dengan kelembutan susu.</p><div class="product-bottom"><div class="price">Rp 12.000 <small>/ cup</small></div><button class="add" data-add="milk">+</button></div></div></article>
+<article class="product reveal" data-kind="fruit"><div class="product-visual"><span class="product-chip">Fan favorite</span><div class="drink lychee"></div></div><div class="product-body"><h3>Esteh Lychee</h3><p>Kesegaran teh dengan sentuhan buah leci.</p><div class="product-bottom"><div class="price">Rp 12.000 <small>/ cup</small></div><button class="add" data-add="lychee">+</button></div></div></article>
+</div><div class="demo">PREVIEW MODE — Nama menu dan harga adalah contoh. Sesuaikan dengan produk, ukuran, biaya, dan harga jual yang sebenarnya sebelum dipublikasikan untuk pelanggan.</div></div>
+<aside class="cart-panel" id="cart"><div class="cart-title">♧ Keranjang pesanan <span id="miniCount">0 item</span></div><div class="cart-items" id="cartItems"><div class="cart-empty">Keranjang masih kosong.<br>Pilih minuman untuk mulai simulasi.</div></div><div class="sumline"><span>Subtotal</span><b id="subtotal">Rp 0</b></div><div class="sumline"><span>Ongkos kirim (contoh)</span><b id="shipping">Rp 0</b></div><div class="sumline total"><span>Total simulasi</span><b id="total">Rp 0</b></div><button class="btn primary full" id="checkout">Lanjut ke pemesanan ↗</button><p class="hint">Simulasi lokal saja. Tidak ada pembayaran atau pesanan yang dikirim.</p></aside></div>
+</section>
+<section class="shell section" id="paket"><div class="bundle reveal"><div><div class="micro">02 / Paket hemat</div><h2>3 rasa favorit.<br>Satu paket spesial.</h2><p>Nikmati tiga varian pilihan dalam satu paket. Contoh promosi ini dapat disesuaikan setelah biaya dan margin dihitung.</p><div class="bundle-price"><b>Rp 27.000</b><del>Rp 36.000</del></div><button class="btn outline" data-add="bundle">＋ Tambah paket</button></div><div class="bundle-cups"><div class="drink original"></div><div class="drink milk"></div><div class="drink lemon"></div></div><span class="save">HEMAT 25%</span></div></section>
+<section class="shell section" id="tentang"><div class="section-head reveal"><div><div class="micro">03 / Pengalaman pemesanan</div><h2>Mudah dari awal.</h2></div><p>Rancang pengalaman yang ringkas: pilih produk, tinjau pesanan, lalu konfirmasi.</p></div><div class="steps"><div class="step reveal"><div class="stepnum">01 / PILIH</div><h3>Pilih produk</h3><p>Pilih varian dan jumlah pesanan yang Anda inginkan.</p></div><div class="step reveal"><div class="stepnum">02 / TINJAU</div><h3>Periksa keranjang</h3><p>Periksa pilihan dan total contoh sebelum melanjutkan.</p></div><div class="step reveal"><div class="stepnum">03 / KONFIRMASI</div><h3>Simulasi selesai</h3><p>Preview ini belum mengirim data ke toko atau memproses pembayaran.</p></div></div></section>
+<section class="shell section" id="pesan"><div class="cta-band reveal"><div><div class="micro">Your next refresh</div><h2>Rasa hari ini, untuk masa depan.</h2><p>Esteh Tian — tradisi teh dengan energi masa depan.</p></div><button class="btn primary" id="openOrder">Coba simulasi pesanan ↗</button></div></section>
+</main>
+<footer><div class="shell foot"><a class="logo" href="#home"><span class="logo-mark">◈</span><span>ESTEH TIAN<small>F U T U R E&nbsp; 2 0 5 0</small></span></a><span>© 2026 Esteh Tian · Preview desain dan pengembangan</span><span>PREMIUM TEA EXPERIENCE / 2050</span></div></footer>
+<div class="backdrop" id="modal"><div class="modal"><div class="modalhead"><h2>Simulasi pemesanan</h2><button class="close" id="close">×</button></div><p style="font-size:11px;line-height:1.7;color:var(--muted)">Isi data contoh untuk melihat ringkasan. Data tidak dikirim atau disimpan ke server.</p><form id="orderForm"><div class="field"><label for="name">Nama contoh</label><input id="name" required placeholder="Nama Anda"></div><div class="field"><label for="note">Catatan (opsional)</label><textarea id="note" rows="2" placeholder="Contoh: es terpisah"></textarea></div><div class="demo">DEMO SAJA — jangan masukkan data sensitif. Belum ada pembayaran dan pesanan nyata.</div><button class="btn primary full" type="submit">Tampilkan ringkasan</button></form><div id="result" class="demo" hidden></div></div></div><div class="toast" id="toast"></div>
+<script>
+const items={original:{name:"Esteh Original",price:8000},lemon:{name:"Esteh Lemon",price:10000},milk:{name:"Esteh Milk Tea",price:12000},lychee:{name:"Esteh Lychee",price:12000},bundle:{name:"Paket 3 Rasa Favorit",price:27000}};
+const cart={};const fmt=n=>new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n);
+const toast=document.getElementById("toast");function ping(s){toast.textContent=s;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2000)}
+function add(id){cart[id]=(cart[id]||0)+1;render();ping(items[id].name+" ditambahkan")}
+function render(){const list=document.getElementById("cartItems"),entries=Object.entries(cart).filter(([id,q])=>q>0),qty=entries.reduce((s,[id,q])=>s+q,0),subtotal=entries.reduce((s,[id,q])=>s+items[id].price*q,0),shipping=qty?8000:0;document.getElementById("count").textContent=qty;document.getElementById("miniCount").textContent=qty+" item";document.getElementById("subtotal").textContent=fmt(subtotal);document.getElementById("shipping").textContent=fmt(shipping);document.getElementById("total").textContent=fmt(subtotal+shipping);
+if(!entries.length){list.innerHTML='<div class="cart-empty">Keranjang masih kosong.<br>Pilih minuman untuk mulai simulasi.</div>'}else{list.innerHTML=entries.map(([id,q])=>`<div class="cart-row"><div><strong>${items[id].name}</strong><small>${fmt(items[id].price)} / item</small></div><div class="qty"><button data-change="${id}" data-d="-1">−</button><b>${q}</b><button data-change="${id}" data-d="1">+</button></div></div>`).join("")}
+document.getElementById("result").hidden=true}
+document.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>add(b.dataset.add)));
+document.getElementById("cartItems").addEventListener("click",e=>{const b=e.target.closest("[data-change]");if(!b)return;const id=b.dataset.change;cart[id]=(cart[id]||0)+Number(b.dataset.d);if(cart[id]<=0)delete cart[id];render()});
+document.querySelectorAll("[data-filter]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".product").forEach(p=>p.style.display=(b.dataset.filter==="all"||p.dataset.kind===b.dataset.filter)?"":"none")}));
+document.getElementById("jumpCart").addEventListener("click",()=>document.getElementById("cart").scrollIntoView({behavior:"smooth",block:"center"}));
+const modal=document.getElementById("modal");function open(){modal.classList.add("open")}function close(){modal.classList.remove("open")}
+document.getElementById("checkout").addEventListener("click",open);document.getElementById("openOrder").addEventListener("click",open);document.getElementById("close").addEventListener("click",close);modal.addEventListener("click",e=>{if(e.target===modal)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+document.getElementById("orderForm").addEventListener("submit",e=>{e.preventDefault();const qty=Object.values(cart).reduce((s,q)=>s+q,0);if(!qty){ping("Tambahkan produk dahulu");close();document.getElementById("produk").scrollIntoView({behavior:"smooth"});return}const name=document.getElementById("name").value.trim();const result=document.getElementById("result");result.hidden=false;result.textContent="SIMULASI BERHASIL — Nama: "+name+". Total: "+document.getElementById("total").textContent+". Pesanan tidak dikirim dan data tidak disimpan."});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("on");obs.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll(".reveal:not(.on)").forEach(e=>obs.observe(e));render();
+</script>
+</body></html>'''
+html_path = base / "index.html"
+html_path.write_text(html, encoding="utf-8")
+readme = """# Esteh Tian Future 2050 — Futuristic Preview v2
+
+1. Replace the repository root `index.html` with this file.
+2. Commit to `main`.
+3. Check GitHub Actions and Settings → Pages.
+4. Refresh the GitHub Pages preview.
+
+All product prices are examples. Cart and checkout are local demo only; no orders are sent, no payment is processed, and form data is not saved.
+"""
+(base/"README.md").write_text(readme, encoding="utf-8")
+zip_path = Path("/mnt/data/estehtian_future_2050_futuristic_v2.zip")
+with zipfile.ZipFile(zip_path,"w",zipfile.ZIP_DEFLATED) as z:
+    z.write(html_path,"index.html")
+    z.write(base/"README.md","README.md")
+print(f"Created {html_path} ({html_path.stat().st_size:,} bytes)")
+print(f"Created {zip_path} ({zip_path.stat().st_size:,} bytes)")
+Setuju. Versi sebelumnya masih terasa seperti template landing page biasa. Untuk Esteh Tian Future 2050, kita perlu perubahan visual yang lebih berani: premium cyber-tea, pencahayaan neon, foto minuman sinematik, panel kaca futuristik, dan katalog yang terasa seperti toko digital masa depan.
+
+Saya sudah membuat konsep visual baru. Arah desainnya memakai warna hitam zamrud, hijau neon, cahaya cyan, dan produk teh sebagai fokus utama. Desain ini juga mencakup katalog, keranjang pesanan, paket hemat, serta alur pemesanan.
+
+Pasang versi futuristik baru
+Saya juga sudah menyiapkan file website versi 2 dengan perubahan desain dan fitur yang bisa diuji di GitHub Pages.
+
+Esteh Tian Future 2050 — Futuristic v2
+
+HTML + CSS + JavaScript · Mobile responsive · Keranjang simulasi
+
+Unduh paket website versi 2 (ZIP)
+
+Unduh file index.html versi 2
+
+Cara mengganti versi lama
+Unduh dan ekstrak ZIP.
+
+Buka repositori Esteh Tian di GitHub.
+
+Buka file index.html, lalu klik ikon pensil untuk mengedit.
+
+Ganti seluruh isi dengan isi file index.html versi 2. Jangan mengunggah ZIP sebagai pengganti file HTML.
+
+Klik Commit changes untuk menyimpan.
+
+Buka tab Actions dan tunggu deployment selesai.
+
+Periksa hasilnya di preview Esteh Tian Future 2050.
+
+Tidak perlu mengubah DNS atau pengaturan domain untuk pembaruan ini.
+
+Penting: gambar gelas pada versi kode ini masih dibuat menggunakan CSS, bukan foto produk asli. Agar hasilnya lebih premium lagi, langkah berikutnya adalah mengganti ilustrasi tersebut dengan foto minuman Esteh Tian yang berkualitas tinggi. Harga katalog juga masih contoh, dan keranjang tetap berupa simulasi lokal.
+
+
+index.html
+HTML
+buatkan foto asli bukan simulasi untuk tampilan modren futuristic
+
+Saya sudah buatkan konsep tampilan Esteh Tian Future 2050 dengan visual minuman yang bergaya fotografi realistis, bukan ilustrasi gelas berbasis CSS seperti versi sebelumnya.
+
+Agar website GitHub Pages Anda benar-benar menggunakan foto produk, langkah berikutnya adalah memasukkan gambar-gambar produk ke dalam index.html dan mengganti visual gelas simulasi dengan gambar tersebut. Gambar konsep di atas merupakan visual hasil generasi AI, bukan foto produk fisik yang benar-benar difoto.
+
+Saya juga bisa menyiapkan aset gambar terpisah untuk:
+
+Esteh Original — teh amber dengan es batu, embun pada gelas, dan daun teh segar.
+
+Esteh Milk Tea — teh susu dengan boba.
+
+Esteh Lychee — teh merah muda dengan buah leci.
+
+Esteh Matcha Latte — matcha hijau dengan tekstur minuman yang realistis.
+
+Paket Hemat — foto beberapa varian minuman dalam satu komposisi premium.
+
+Untuk tampilan paling profesional, gunakan gambar produk yang konsisten dengan logo Esteh Tian, pencahayaan studio, dan latar futuristik hijau zamrud. Jika Anda memiliki foto minuman Esteh Tian yang asli, unggah fotonya agar saya dapat membantu mengolahnya menjadi visual produk yang lebih premium tanpa mengganti produk aslinya.
+
+buatkan file index. untuk di copy
+
+Berikut saya siapkan file index.html untuk website Esteh Tian Future 2050 yang bisa langsung Anda salin ke repositori GitHub Pages.
+
+Versi ini menggunakan gaya futuristik modern: latar gelap, aksen neon hijau, tampilan produk premium, katalog minuman, paket hemat, dan tombol pemesanan WhatsApp. Gambar produk dibuat sebagai aset visual, bukan foto asli produk fisik; untuk menggantinya, Anda bisa menggunakan foto minuman Esteh Tian sendiri.
+
+index.html — Esteh Tian Future 2050
+
+File HTML lengkap · Siap disalin ke GitHub Pages
+
+Unduh file index.html
+
+Cara memasangnya di GitHub
+Unduh file index.html melalui tautan di atas.
+
+Buka repositori GitHub website Esteh Tian.
+
+Buka file index.html yang sudah ada.
+
+Klik ikon pensil Edit.
+
+Ganti seluruh isi lama dengan isi file baru.
+
+Klik Commit changes untuk menyimpan.
+
+Tunggu GitHub Pages memperbarui website, lalu buka:
+
+Lihat website Esteh Tian Future 2050
+
+Sebelum dipublikasikan:
+
+Foto produk menggunakan gambar eksternal dari Unsplash; ganti dengan foto produk asli Anda jika tersedia.
+
+Sesuaikan nama menu dan harga contoh.
+
+Cari 628xxxxxxxxxx di kode dan ganti dengan nomor WhatsApp bisnis Anda, tanpa tanda + atau spasi.
+
+Catatan: keranjang dan tombol pemesanan disiapkan untuk membantu alur pesanan, tetapi file ini belum terhubung ke sistem pembayaran atau penyimpanan pesanan otomatis.
+
+
+Chat memory full
+Start a new chat with an automatic summary of this conversation, or upgrade to continue here with expanded memory in every chat.
+
+
+from pathlib import Path
+
+html = r'''<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#031413">
+  <meta name="description" content="Esteh Tian Future 2050 — pengalaman teh segar dengan tampilan modern futuristik.">
+  <title>Esteh Tian — Future 2050</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#031110;--panel:#071c1b;--panel2:#092523;--mint:#55ffd0;--mint2:#13d9a7;--text:#f1fffb;--muted:#a8c5be;--line:rgba(85,255,208,.25);--glow:0 0 34px rgba(25,236,181,.14)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#103c36 0,transparent 34%),radial-gradient(ellipse at 0% 38%,#062d29 0,transparent 32%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif}
+    a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}.wrap{width:min(1180px,92%);margin:auto}
+    header{position:sticky;top:0;z-index:20;background:rgba(2,15,14,.84);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+    .nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;font-family:"Space Grotesk",sans-serif;letter-spacing:.17em;font-weight:700}.brand-mark{width:42px;height:42px;border:2px solid var(--mint);border-radius:14px 3px 14px 3px;display:grid;place-items:center;color:var(--mint);font-size:23px;transform:rotate(-8deg);box-shadow:0 0 20px #16dba533}.brand small{display:block;font-size:9px;letter-spacing:.42em;color:var(--mint);margin-top:3px}.navlinks{display:flex;align-items:center;gap:28px;color:#d4e7e1;font-size:14px}.navlinks a:hover{color:var(--mint)}.nav-cta,.btn{border:1px solid var(--mint);border-radius:999px;padding:12px 20px;background:transparent;color:var(--text);box-shadow:var(--glow);transition:.2s}.nav-cta:hover,.btn:hover{transform:translateY(-2px);background:rgba(85,255,208,.1)}.btn.primary{background:linear-gradient(110deg,#7affd7,#18d8a6);color:#03201a;border:0;font-weight:700}.menu-toggle{display:none;background:transparent;border:1px solid var(--line);border-radius:12px;color:var(--mint);padding:8px 12px}
+    .hero{min-height:590px;display:grid;grid-template-columns:1fr 1.02fr;align-items:center;gap:32px;padding:64px 0 58px;position:relative}.eyebrow{color:var(--mint);text-transform:uppercase;letter-spacing:.3em;font-size:11px;font-weight:700}.hero h1{font-family:"Space Grotesk",sans-serif;font-size:clamp(44px,6vw,78px);line-height:.98;letter-spacing:-.06em;margin:18px 0}.hero h1 span{color:var(--mint);text-shadow:0 0 30px #28f3bf44}.hero p{color:#c0d5ce;line-height:1.75;max-width:480px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 30px}.proofs{display:flex;gap:20px;flex-wrap:wrap;color:#c9ded7;font-size:12px}.proof{display:flex;align-items:center;gap:9px}.proof b{color:var(--mint);font-size:18px}.hero-art{position:relative;min-height:455px;border-radius:32px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--glow);background:#092b27}.hero-art img{position:absolute;width:100%;height:100%;object-fit:cover;inset:0;filter:saturate(1.1)}.hero-art:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(2,17,16,.25),transparent 55%),linear-gradient(0deg,rgba(2,17,16,.55),transparent 45%)}.art-label{position:absolute;z-index:1;left:24px;bottom:24px;padding:13px 17px;background:rgba(2,20,18,.75);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(12px)}.art-label strong{display:block;color:var(--mint);font-family:"Space Grotesk",sans-serif;font-size:18px}.art-label small{color:#d1e7df}
+    .section{padding:42px 0 55px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}.section h2{font:600 clamp(27px,3vw,38px)/1.1 "Space Grotesk",sans-serif;letter-spacing:-.04em;margin:8px 0}.section-head p{margin:0;color:var(--muted);font-size:14px}.filters{display:flex;gap:8px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:#08211f;color:#c5ddd5;padding:9px 15px;border-radius:99px;font-size:12px}.filter.active,.filter:hover{background:var(--mint);color:#03211a;border-color:var(--mint)}
+    .products{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.product{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:linear-gradient(150deg,rgba(10,42,38,.94),rgba(3,18,17,.96));transition:.25s}.product:hover{transform:translateY(-5px);box-shadow:var(--glow);border-color:rgba(85,255,208,.6)}.product[hidden]{display:none}.product-image{height:205px;position:relative;overflow:hidden;background:#102b25}.product-image img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.product:hover .product-image img{transform:scale(1.06)}.tag{position:absolute;top:12px;left:12px;background:rgba(1,18,16,.82);border:1px solid var(--line);color:var(--mint);padding:6px 9px;border-radius:99px;font-size:10px}.product-info{padding:17px}.product h3{margin:0 0 7px;font:600 18px "Space Grotesk",sans-serif}.product p{color:var(--muted);font-size:12px;line-height:1.6;min-height:38px;margin:0 0 14px}.price-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.price{color:var(--mint);font-weight:700}.add{background:var(--mint);color:#03201a;border:0;border-radius:99px;padding:9px 13px;font-weight:700;font-size:12px}.add:hover{filter:brightness(1.1)}
+    .feature-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:18px;margin-top:20px}.bundle,.steps{border:1px solid var(--line);border-radius:24px;background:linear-gradient(130deg,#0a302a,#061a18);overflow:hidden;box-shadow:var(--glow)}.bundle{display:grid;grid-template-columns:.9fr 1.1fr;min-height:265px}.bundle-copy{padding:26px}.bundle h3{font:600 27px/1.1 "Space Grotesk",sans-serif;margin:8px 0 12px}.bundle p{font-size:13px;line-height:1.6;color:var(--muted)}.bundle img{width:100%;height:100%;min-height:265px;object-fit:cover;mask-image:linear-gradient(90deg,transparent 0%,black 28%)}.old-price{text-decoration:line-through;color:#77958c;font-size:13px;margin-left:8px}.steps{padding:26px}.steps h3{margin:0 0 22px;font:600 22px "Space Grotesk",sans-serif}.step-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.step{text-align:center;color:var(--muted);font-size:12px;line-height:1.5}.step-icon{width:48px;height:48px;margin:0 auto 12px;border:1px solid var(--mint);color:var(--mint);border-radius:16px;display:grid;place-items:center;font-size:20px}.step b{display:block;color:var(--text);margin-bottom:5px}.steps .btn{display:block;width:max-content;margin:22px auto 0}
+    footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:12px}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.footer-note{color:var(--mint);letter-spacing:.04em}
+    .cart-pill{position:fixed;right:20px;bottom:20px;z-index:25;background:var(--mint);color:#03201a;border:0;border-radius:99px;padding:14px 20px;font-weight:700;box-shadow:0 8px 35px #00e6a744}.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#eafff8;color:#03201a;border-radius:12px;padding:12px 18px;z-index:30;font-size:13px;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:900px){.navlinks{gap:14px}.hero{grid-template-columns:1fr 1fr}.products{grid-template-columns:repeat(2,1fr)}.product-image{height:230px}.feature-grid{grid-template-columns:1fr}}
+    @media(max-width:650px){.nav{height:68px}.menu-toggle{display:block}.navlinks{display:none;position:absolute;top:68px;left:0;right:0;background:#031715;padding:18px 5%;border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start}.navlinks.open{display:flex}.nav-cta{display:none}.hero{grid-template-columns:1fr;padding:45px 0 30px;gap:22px}.hero-art{min-height:340px;grid-row:1}.hero h1{font-size:54px}.proofs{gap:12px}.section-head{align-items:flex-start;flex-direction:column}.products{gap:10px}.product-image{height:160px}.product-info{padding:13px}.product h3{font-size:16px}.product p{min-height:55px}.price-row{align-items:flex-start;flex-direction:column}.add{width:100%}.bundle{grid-template-columns:1fr}.bundle img{min-height:190px;max-height:220px;mask-image:linear-gradient(0deg,black 75%,transparent)}.step-row{gap:8px}.steps{padding:20px}.cart-pill{right:12px;bottom:12px}.brand{font-size:13px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#beranda" aria-label="Esteh Tian beranda"><span class="brand-mark">葉</span><span>ESTEH TIAN<small>F U T U R E&nbsp; 2 0 5 0</small></span></a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
+    <nav class="navlinks" id="navlinks"><a href="#beranda">Beranda</a><a href="#produk">Produk</a><a href="#paket">Paket Hemat</a><a href="#tentang">Tentang</a><a href="#pesan">Pesan</a></nav>
+    <a class="nav-cta" href="#produk">Pesan Sekarang ↗</a>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero" id="beranda">
+    <div>
+      <div class="eyebrow">Premium tea experience</div>
+      <h1>Esteh Tian<br>Future <span>2050</span></h1>
+      <p>Perpaduan teh pilihan, kesegaran alami, dan pengalaman modern. Temukan rasa favoritmu dalam setiap tegukan.</p>
+      <div class="actions"><a class="btn primary" href="#produk">↓ &nbsp; Lihat Menu</a><a class="btn" href="#tentang">◉ &nbsp; Tentang Kami</a></div>
+      <div class="proofs"><div class="proof"><b>✳</b><span>Bahan pilihan<br>berkualitas</span></div><div class="proof"><b>◈</b><span>Rasa segar<br>setiap hari</span></div><div class="proof"><b>⌘</b><span>Rasa masa<br>depan</span></div></div>
+    </div>
+    <div class="hero-art">
+      <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=1200&q=90" alt="Segelas teh es berwarna amber dengan suasana premium" onerror="this.src='https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1200&q=85'">
+      <div class="art-label"><strong>GOOD TEA. BETTER TOMORROW.</strong><small>Segarkan harimu, satu tegukan demi satu tegukan.</small></div>
+    </div>
+  </section>
+
+  <section class="wrap section" id="produk">
+    <div class="section-head">
+      <div><div class="eyebrow">Temukan favoritmu</div><h2>Koleksi Minuman</h2><p>Racikan segar untuk menemani hari-harimu.</p></div>
+      <div class="filters" aria-label="Filter produk"><button class="filter active" data-filter="all">Semua</button><button class="filter" data-filter="original">Original</button><button class="filter" data-filter="milk">Milk Tea</button><button class="filter" data-filter="fruit">Fruit Tea</button><button class="filter" data-filter="special">Special</button></div>
+    </div>
+    <div class="products">
+      <article class="product" data-category="original">
+        <div class="product-image"><img loading="lazy" src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=700&q=85" alt="Es teh amber segar"><span class="tag">POPULER</span></div>
+        <div class="product-info"><h3>Esteh Original</h3><p>Teh klasik dengan rasa autentik dan kesegaran yang pas.</p><div class="price-row"><span class="price">Rp 8.000</span><button class="add" data-name="Esteh Original" data-price="8000">＋ Tambah</button></div></div>
+      </article>
+      <article class="product" data-category="milk">
+        <div class="product-image"><img loading="lazy" src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=700&q=85" alt="Minuman milk tea dingin"><span class="tag">MILKY</span></div>
+        <div class="product-info"><h3>Esteh Milk Tea</h3><p>Perpaduan teh dan susu dengan tekstur lembut.</p><div class="price-row"><span class="price">Rp 12.000</span><button class="add" data-name="Esteh Milk Tea" data-price="12000">＋ Tambah</button></div></div>
+      </article>
+      <article class="product" data-category="fruit">
+        <div class="product-image"><img loading="lazy" src="https://images.unsplash.com/photo-1513558161293-c pas?auto=format&fit=crop&w=700&q=85" alt="Minuman buah dingin" onerror="this.src='https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=700&q=85'"><span class="tag">FRUITY</span></div>
+        <div class="product-info"><h3>Esteh Lychee</h3><p>Teh buah yang ringan, segar, dan punya sentuhan manis.</p><div class="price-row"><span class="price">Rp 12.000</span><button class="add" data-name="Esteh Lychee" data-price="12000">＋ Tambah</button></div></div>
+      </article>
+      <article class="product" data-category="special">
+        <div class="product-image"><img loading="lazy" src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=700&q=85" alt="Minuman matcha hijau"><span class="tag">SPECIAL</span></div>
+        <div class="product-info"><h3>Matcha Latte</h3><p>Karakter matcha yang khas dalam sajian creamy.</p><div class="price-row"><span class="price">Rp 15.000</span><button class="add" data-name="Matcha Latte" data-price="15000">＋ Tambah</button></div></div>
+      </article>
+    </div>
+    <p style="font-size:11px;color:#77978e;margin-top:14px">Catatan: nama menu dan harga di atas adalah contoh. Silakan sesuaikan dengan menu dan harga resmi Esteh Tian.</p>
+  </section>
+
+  <section class="wrap section" id="paket">
+    <div class="feature-grid">
+      <div class="bundle">
+        <div class="bundle-copy"><div class="eyebrow">Lebih hemat</div><h3>Paket Favorit<br>Untuk Berbagi</h3><p>Pilih beberapa varian untuk momen santai bersama teman dan keluarga.</p><div class="price"><span id="bundlePrice">Rp 27.000</span><span class="old-price">Rp 36.000</span></div><div style="margin-top:18px"><button class="btn primary" id="bundleButton">＋ Tambah Paket</button></div></div>
+        <img loading="lazy" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=900&q=85" alt="Pilihan minuman segar untuk berbagi">
+      </div>
+      <div class="steps" id="pesan"><h3>Cara Pemesanan</h3><div class="step-row"><div class="step"><div class="step-icon">▤</div><b>01. Pilih Menu</b>Pilih minuman favoritmu.</div><div class="step"><div class="step-icon">＋</div><b>02. Tambah Pesanan</b>Masukkan ke keranjang.</div><div class="step"><div class="step-icon">↗</div><b>03. Konfirmasi</b>Kirim daftar pesanan.</div></div><a class="btn" id="whatsappButton" href="https://wa.me/?text=Halo%20Esteh%20Tian%2C%20saya%20ingin%20memesan." target="_blank" rel="noopener">◉ &nbsp; Pesan via WhatsApp</a><p style="text-align:center;color:#8fb0a5;font-size:11px;margin:10px 0 0">Atur nomor WhatsApp bisnis pada kode sebelum dipublikasikan.</p></div>
+    </div>
+  </section>
+  <section class="wrap section" id="tentang" style="padding-top:0"><div class="eyebrow">Tentang Esteh Tian</div><h2>Rasa segar, visi masa depan.</h2><p style="color:var(--muted);line-height:1.8;max-width:760px">Esteh Tian membawa pengalaman menikmati teh ke arah yang lebih modern. Kami percaya minuman yang menyegarkan bisa hadir dengan rasa yang akrab, pelayanan yang mudah, dan identitas visual yang berani menatap masa depan.</p></section>
+</main>
+<footer><div class="wrap footer-inner"><a class="brand" href="#beranda"><span class="brand-mark">葉</span><span>ESTEH TIAN<small>F U T U R E&nbsp; 2 0 5 0</small></span></a><span class="footer-note">Teh hari ini, untuk masa depan.</span><span>© <span id="year"></span> Esteh Tian. Sesuaikan tautan sosial dan kontak bisnis Anda.</span></div></footer>
+<button class="cart-pill" id="cartButton">Keranjang · <span id="cartCount">0</span></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+  const cart = [];
+  const countEl = document.getElementById('cartCount');
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function showToast(message){toast.textContent=message;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2300)}
+  function addItem(name,price){cart.push({name,price});countEl.textContent=cart.length;showToast(name+' ditambahkan ke keranjang.')}
+  document.querySelectorAll('.add').forEach(button=>button.addEventListener('click',()=>addItem(button.dataset.name,Number(button.dataset.price))));
+  document.getElementById('bundleButton').addEventListener('click',()=>addItem('Paket Favorit',27000));
+  document.querySelectorAll('.filter').forEach(button=>button.addEventListener('click',()=>{
+    document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));button.classList.add('active');
+    document.querySelectorAll('.product').forEach(card=>{card.hidden=button.dataset.filter!=='all'&&card.dataset.category!==button.dataset.filter});
+  }));
+  document.getElementById('cartButton').addEventListener('click',()=>{
+    if(!cart.length){showToast('Keranjang masih kosong. Pilih menu terlebih dahulu.');return}
+    const summary=cart.map((item,i)=>(i+1)+'. '+item.name+' — Rp '+item.price.toLocaleString('id-ID')).join('\\n');
+    const total=cart.reduce((sum,item)=>sum+item.price,0);
+    const message='Halo Esteh Tian, saya ingin memesan:\\n'+summary+'\\nTotal: Rp '+total.toLocaleString('id-ID');
+    // Ganti 628xxxxxxxxxx dengan nomor WhatsApp bisnis Anda (format internasional, tanpa + atau spasi).
+    const businessNumber='628xxxxxxxxxx';
+    if(businessNumber.includes('x')){showToast('Pesanan siap. Ganti nomor WhatsApp bisnis di kode agar bisa dikirim.');return}
+    window.open('https://wa.me/'+businessNumber+'?text='+encodeURIComponent(message),'_blank','noopener');
+  });
+  document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navlinks').classList.toggle('open'));
+  document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navlinks').classList.remove('open')));
+  document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>'''
+# fix malformed accidental image URL to a valid URL
+html = html.replace("https://images.unsplash.com/photo-1513558161293-c pas?auto=format&fit=crop&w=700&q=85",
+                    "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=700&q=85")
+out = Path("/mnt/data/index.html")
+out.write_text(html, encoding="utf-8")
+print(f"File berhasil dibuat: {out}\nUkuran: {out.stat().st_size:,} byte")
+File berhasil dibuat: /mnt/data/index.html
+Ukuran: 18,422 byte
+Close dialog
